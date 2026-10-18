@@ -1,0 +1,23 @@
+# Keep the Docker build context small and reproducible.
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime/derived artefacts — evaluators mount ./data themselves.
+vector_store/
+data/*.db
+
+# Never send local secrets into the build context (docker-compose injects .env
+# at runtime, so the image never needs it).
+.env
+.env.*
+
+.git/
+.gitignore
+*.md

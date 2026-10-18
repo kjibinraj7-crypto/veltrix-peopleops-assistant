@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      # Evaluators replace this entire ./data folder with their own corpus before testing
+      - ./data:/app/data
+      # Persisted FAISS index — avoids full rebuild on container restart if corpus unchanged
+      - ./vector_store:/app/vector_store
+    env_file:
+      # Optional: if .env is absent, the service still boots and /health works;
+      # only LLM calls require a provider key. Copy .env.example -> .env to enable.
+      - path: .env
+        required: false
+    environment:
+      - CORPUS_DIR=/app/data/corpus
+      - MANIFEST_PATH=/app/data/manifest.json
+      - DB_PATH=/app/data/veltrix.db
+      - VECTOR_STORE_DIR=/app/vector_store
+    restart: unless-stopped
+    healthcheck:
+      # python:3.11-slim has no curl, so probe /health with the interpreter that
+      # is guaranteed to be present. urlopen raises on 503 (still ingesting) → non-zero.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 40        # 40 * 15s = 10 minutes max wait
+      start_period: 10s

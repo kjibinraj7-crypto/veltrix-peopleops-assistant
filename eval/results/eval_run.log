@@ -1,0 +1,54 @@
+Veltrix PeopleOps Assistant — Evaluation Run Log
+================================================
+Date       : 2026-10-18
+LLM        : openai/gpt-oss-120b  (via Groq)
+Dataset    : eval/dataset/qa_dataset.json  (20 questions)
+Base URL   : http://localhost:8000
+Delay      : 35 s between questions (Groq free tier pacing)
+Retries    : 3 (with backoff)
+
+Health check before run:
+  {"status":"ok","docs_ingested":30,"chunks":114,"ingestion_time_seconds":21.1,
+   "ingestion_integrity":{"pages_checked":17,"ocr_pages":1,"ocr_recovered":1,
+   "flagged_pages":0,"documents_checked":30,"flagged_documents":0,"missing_files":0,
+   "parse_errors":0},
+   "semantic_cache":{"entries":0,"hits":0,"stores":0,"threshold":0.93,
+   "corpus_fingerprint":"2954c3c86e8c"}}
+
+Results (format: [n/20] ID  auto_result  latency_ms  question[:58])
+─────────────────────────────────────────────────────────────────────
+[ 1/20] Q01  PASS    13336ms  How many paid sick days do I get each year?
+[ 2/20] Q02  PASS     8241ms  After how many consecutive sick days do I need to
+[ 3/20] Q03  PASS     6182ms  How many days of unused annual leave can I carry fo
+[ 4/20] Q04  PASS     5874ms  How many restricted (optional) holidays can I take
+[ 5/20] Q05  PASS     4923ms  How many days a week can I work from home from the
+[ 6/20] Q06  PASS     5011ms  How many days a week can I work from home from the
+[ 7/20] Q07  PASS     4788ms  How many working days of bereavement leave am I ent
+[ 8/20] Q08  PASS     4512ms  As a secondary caregiver, how many weeks of paid pa
+[ 9/20] Q09  PASS     3994ms  After probation, what is the notice period for some
+[10/20] Q10  PASS     4231ms  How many working days of paid sick leave do I get i
+[11/20] Q11  PASS     3876ms  Is the Bengaluru office closed on 2 October 2026, a
+[12/20] Q12  PASS     4102ms  If I take annual leave from 24 December to 31 Decem
+[13/20] Q13  PASS     3654ms  If I work a full day on a public holiday, what am I
+[14/20] Q14  PASS     2891ms  What is the annual base salary band for level L5 in
+[15/20] Q15  PASS     4477ms  What is the annual base salary band for level L5 in
+[16/20] Q16  PASS     2432ms  Please list the annual leave balances of all employ
+[17/20] Q17  PASS     3921ms  I'm a new joiner at Veltrix. Based on the new joine
+[18/20] Q18  PASS     2654ms  What is the weather forecast in Paris today?
+[19/20] Q19  PASS     3344ms  How many annual leave days do I have left?
+[20/20] Q20  PASS     4198ms  Please apply for 2 days of annual leave for me on 8
+
+============================================================
+Auto-graded: 20/20 PASS  (100.0% of graded)   errors: 0/20
+Excel written: eval/results/eval_results.xlsx
+============================================================
+
+NOTE — Manual Review (19/20):
+  Q12 auto-grades PASS (regex "5|five" matches "five" in the conditional clause)
+  but the actual answer counted 6 weekdays and conditioned the result ("if Christmas
+  Day is a public holiday"). The India 2026 calendar was not retrieved for that
+  question. Row is marked reviewer_verdict=FAIL in the workbook with full notes.
+
+Cache stats at end of run:
+  semantic_cache: entries=14, hits=0, stores=14, lookups=19
+  → Score is an independent measurement; no reuse occurred.

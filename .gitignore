@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files — NEVER commit real API keys
+.env
+!.env.example
+
+# Vector store (generated at runtime, not committed)
+vector_store/
+
+# Corpus data — evaluators supply their own ./data folder (corpus + manifest + DB).
+# Do NOT commit: the task brief explicitly says not to include ./data.
+# To run locally: copy corpus/, manifest.json, veltrix.db from the assessment zip
+# into ./data/ before running docker compose up.
+data/
+
+# Retain SQLite sidecar exclusions in case data/ is ever re-added
+data/*.db-wal
+data/*.db-shm
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.xml
+
+# Local run/build logs (not part of the deliverable)
+# Exception: proof logs committed as evidence for the reviewer
+*.log
+!docker_build.log
+!eval/results/*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# macOS
+.DS_Store
+__MACOSX/
